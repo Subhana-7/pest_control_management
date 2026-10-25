@@ -151,6 +151,17 @@ app_license = "mit"
 # 	}
 # }
 
+
+doc_events = {
+    "Pest Control Service Request": {
+        "validate": (
+            "pest_control_management.pest_control_management."
+            "service_request.validate_service_request"
+        )
+    }
+}
+
+
 # Scheduled Tasks
 # ---------------
 
@@ -253,3 +264,13 @@ app_license = "mit"
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
 
+
+doc_events = {
+    "Pest Control Work Order": {
+        "validate": (
+            "pest_control_management.pest_control_management.doctype."
+            "pest_control_work_order.pest_control_work_order."
+            "validate_work_order"
+        )
+    }
+}

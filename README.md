@@ -1,255 +1,353 @@
-# Pest Control & Facility Management ERP
+<div align="center">
 
-[![Frappe Framework](https://img.shields.io/badge/Frappe-v15-blue.svg)](https://frappeframework.com)
-[![ERPNext](https://img.shields.io/badge/ERPNext-v15-blueviolet.svg)](https://erpnext.com)
-[![Frappe HR](https://img.shields.io/badge/Frappe%20HR-v15-orange.svg)](https://frappehr.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](license.txt)
-[![Code Style: Ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+<img src="assets/banner.svg" alt="Pest Control & Facility Management ERP" width="100%">
 
-A comprehensive, production-ready enterprise Frappe custom application tailored for **Pest Control**, **Manpower Allocation**, and **Facility Management** service providers.
+<br><br>
 
-Seamlessly integrated with **ERPNext** (CRM, Inventory, Billing) and **Frappe HR** (Employees, Shift Schedules, Leave Applications, Attendance Tracking), this application handles the complete end-to-end operational lifecycle: from multi-site contract management to conflict-free technician dispatch, chemical tracking, digital certificates, and automated HR attendance.
+![Frappe](https://img.shields.io/badge/Frappe-v15-0089FF?style=for-the-badge&logo=frappe&logoColor=white)
+![ERPNext](https://img.shields.io/badge/ERPNext-v15-5E64FF?style=for-the-badge)
+![Frappe HR](https://img.shields.io/badge/Frappe%20HR-v15-7C3AED?style=for-the-badge)
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)
+![Code Style](https://img.shields.io/badge/Code%20Style-Ruff-D7FF64?style=for-the-badge&logo=ruff&logoColor=black)
 
----
+**[Features](#-features)** · **[How it works](#-how-it-works)** · **[DocTypes](#-doctypes)** · **[Reports](#-workspace--reports)** · **[API](#-rest-api)** · **[Install](#-installation)** · **[Contributing](#-contributing)**
 
-## Table of Contents
+</div>
 
-- [Key Features](#key-features)
-- [System Architecture & Lifecycle](#system-architecture--lifecycle)
-- [Core Modules & DocTypes](#core-modules--doctypes)
-  - [1. Operations & Work Orders](#1-operations--work-orders)
-  - [2. Smart Manpower Allocation Engine](#2-smart-manpower-allocation-engine)
-  - [3. Facility & Contract Management](#3-facility--contract-management)
-- [HR & ERPNext Integrations](#hr--erpnext-integrations)
-- [Reports & Executive Dashboard](#reports--executive-dashboard)
-- [Whitelisted REST APIs](#whitelisted-rest-apis)
-- [Installation Guide](#installation-guide)
-- [Development & Code Quality](#development--code-quality)
-- [License & Author](#license--author)
+<br>
 
----
+## 📖 Overview
 
-## Key Features
+A custom **Frappe app** for pest control, manpower allocation and facility management companies. It covers the full operational lifecycle:
 
-- **Field Work Order Management:** Full tracking of service tickets (`Draft` &rarr; `Scheduled` &rarr; `In Progress` &rarr; `Completed`), shift slots, priority levels, and client ratings.
-- **Automated Conflict-Free Manpower Dispatch:**
-  - Double-booking prevention across shifts and dates.
-  - Automatic cross-check against Frappe HR approved **Leave Applications**.
-  - Cross-check against declared **Company Holiday Lists** and weekly offs (with emergency overtime approval flags).
-  - Real-time verification of technician **Pesticide Handling Licenses**.
-- **Facility & Multi-Site Management:** Track multiple customer properties, facility types (Healthcare, F&B, Industrial, Residential), square footage, and risk ratings.
-- **Annual Maintenance Contracts (AMC):** Manage recurring service agreements, scopes of treatment, billing cycles (Monthly, Quarterly, Upfront), and renewal pipelines.
-- **Chemical & Consumable Tracking:** Log specific active ingredients, batch numbers, dosage, and consumption per visit.
-- **Bi-Directional HR Attendance Sync:** Automatically marks technician attendance as `Present` in Frappe HR upon work order completion.
-- **Rich Dashboard & Operations Workspace:** Built-in number cards, quick navigation shortcuts, and 8+ analytical reports.
-- **Pest Service Certificate:** Ready-to-print digital compliance and completion certificate for client handover.
+> **Multi-site contracts** → **Work orders** → **Validated technician dispatch** → **Field execution & chemical usage** → **Client sign-off, certificate & HR attendance**
 
----
+It plugs straight into **ERPNext** (customers, items, billing) and **Frappe HR** (employees, leave, holidays, shifts, attendance), so there is **no duplicate master data** and **no spreadsheet-based rostering**.
 
-## System Architecture & Lifecycle
+<br>
 
+## 🎯 Why use it?
+
+| 🚧 Problem in the field | ✅ How this app handles it |
+|---|---|
+| Technician double-booked on the same shift | Allocation is **rejected** if a conflicting booking exists |
+| Technician on approved leave gets dispatched | Checked against Frappe HR **Leave Applications** |
+| Assignments on weekly offs or public holidays | Checked against the **Holiday List**, with an emergency-overtime override flag |
+| Unlicensed staff handling pesticides | **Pesticide Handling License** validity verified at allocation time |
+| Attendance entered twice (ops and HR) | Attendance is **auto-marked Present** when the work order completes |
+| Clients asking for proof of service | Print-ready **Pest Service Certificate** |
+
+<br>
+
+## ✨ Features
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 📋 Work order management
+Draft → Scheduled → In Progress → Completed, with shift slots, priorities and client ratings.
+
+### 🧠 Smart manpower allocation
+Double-booking, leave, holiday and license checks in one engine.
+
+### 🏢 Multi-site facilities
+Several premises per customer, with site type, area (sq ft) and risk rating.
+
+### 📑 AMC & contracts
+AMC, one-time and seasonal contracts, with Monthly, Quarterly or Upfront billing and renewal tracking.
+
+</td>
+<td width="50%" valign="top">
+
+### 🧪 Chemical & consumable tracking
+Active ingredient, batch number, dosage and quantity used per visit.
+
+### 🔄 HR attendance sync
+Completing a work order registers attendance in Frappe HR.
+
+### 📊 Operations workspace
+Number cards, shortcuts and **9 analytical reports**.
+
+### 🏅 Service certificate
+A digital completion and compliance certificate for client handover.
+
+### 🔌 REST API
+Whitelisted methods for mobile apps, client portals and external dispatch tools.
+
+</td>
+</tr>
+</table>
+
+<br>
+
+## 🔄 How it works
+
+```mermaid
+flowchart LR
+    A([🏢 Customer & Client Site]) --> B[📑 Pest Control Contract / AMC]
+    B --> C[📋 Pest Work Order<br/><sub>PWO-.YYYY.-</sub>]
+    C --> D{{🧠 Smart Allocation Engine<br/><sub>api.py</sub>}}
+    D -- "double booking<br/>leave record<br/>holiday / weekly off<br/>license expired" --> X[⛔ Blocked]
+    D -- "all checks pass" --> E[👷 Manpower Allocation<br/><sub>MPA-.YYYY.-</sub>]
+    E --> F[🧪 Field execution<br/>& chemical usage]
+    F --> G[✅ Work order closure]
+    G --> H[⭐ Client feedback<br/>& quality review]
+    H --> I[🏅 Service certificate]
+    G --> J[(🗓 Frappe HR<br/>Attendance = Present)]
+
+    style D fill:#fef3c7,stroke:#d97706,color:#000
+    style X fill:#fee2e2,stroke:#dc2626,color:#000
+    style I fill:#dcfce7,stroke:#16a34a,color:#000
+    style J fill:#ede9fe,stroke:#7c3aed,color:#000
 ```
-[ Customer & Client Site ] 
-          │
-          ├──> [ Pest Control Contract (AMC) ] 
-          │                 │
-          │                 ▼
-          └───> [ Pest Work Order ] (PWO-.YYYY.-)
-                        │
-                        ▼
-          [ Smart Allocation Engine (api.py) ]
-          ├── Checks: Double Booking Conflicts
-          ├── Checks: Frappe HR Leave Records
-          ├── Checks: Company Holiday / Weekly Off List
-          └── Checks: Pesticide License Validity
-                        │
-                        ▼
-          [ Manpower Allocation ] (MPA-.YYYY.-)
-                        │
-                        ▼
-          [ Field Execution & Chemical Usage ]
-                        │
-                        ▼
-          [ Work Order Closure & Sign-Off ]
-          ├── Client Feedback & Quality Review
-          ├── Service Certificate Generation
-          └── Auto-Sync: Frappe HR Attendance Ledger (Present)
-```
 
----
+<br>
 
-## Core Modules & DocTypes
+## 🗂 DocTypes
 
-### 1. Operations & Work Orders
-* **Pest Work Order (`Pest Work Order`):** Central operational document representing a scheduled field visit.
-  - Naming Series: `PWO-.YYYY.-`
-  - Links to Customer, Client Site, AMC Contract, and Service Type.
-  - Multi-technician allocation child table (`Pest Work Order Technician`).
-  - Applied chemicals and consumable materials table (`Pest Chemical Consumable`).
-  - Digital feedback capture: Client rating, technician observations, and supervisor quality notes.
+### 🛠 Operations
 
-### 2. Smart Manpower Allocation Engine
-* **Manpower Allocation (`Manpower Allocation`):** Star submittable document managing technician assignments to jobs.
-  - Naming Series: `MPA-.YYYY.-`
-  - Shift Slots: `Morning (08:00 - 12:00)`, `Afternoon (13:00 - 17:00)`, `Evening/Night (18:00 - 22:00)`.
-  - Roles: `Lead Technician`, `Assistant Technician`, `Chemical Sprayer`, `Quality Inspector`.
-  - Check-in & Check-out timestamp recording.
-  - Automated triggers to link back to the Work Order and update HR Attendance.
+| DocType | Naming | Purpose |
+|---|---|---|
+| **Pest Work Order** | `PWO-.YYYY.-` | A scheduled field visit. Links to Customer, Site, Contract and Service Type. Holds the technician table (*Pest Work Order Technician*), the chemicals table (*Pest Chemical Consumable*), client rating, technician observations and supervisor quality notes. |
+| **Manpower Allocation** | `MPA-.YYYY.-` | Submittable document that assigns a technician to a job, with shift slot, role and check-in/check-out timestamps. On submit it links back to the work order and feeds HR attendance. |
 
-### 3. Facility & Contract Management
-* **Pest Control Site (`Pest Control Site`):** Stores customer premises details.
-  - Supports multiple sites per client.
-  - Site Types: Commercial Office, Residential Villa / Flat, Food & Beverage / Restaurant, Healthcare / Hospital, Industrial / Warehouse, Shopping Mall.
-  - Risk categorization: Low, Medium, High, Critical - Food Safety.
-* **Pest Control Contract (`Pest Control Contract`):**
-  - Contract Types: Annual Maintenance Contract (AMC), One-Time Service Contract, Seasonal Disinfestation.
-  - Tracks total contract amount, payment schedule, and recurring service frequencies.
-* **Service Type (`Service Type`):** Catalog of treatments (e.g., Termite Control, Bedbug Eradication, Rodent Baiting, General Disinfection, Mosquito Fogging).
+<table>
+<tr>
+<td width="50%" valign="top">
 
----
+**🕐 Shift slots**
 
-## HR & ERPNext Integrations
+| Slot | Hours |
+|---|---|
+| 🌅 Morning | 08:00 – 12:00 |
+| ☀️ Afternoon | 13:00 – 17:00 |
+| 🌙 Evening / Night | 18:00 – 22:00 |
 
-| Module / DocType | Integration Touchpoint | Business Rule Enforced |
-| :--- | :--- | :--- |
-| **Employee** | Link on Manpower Allocation | Fetches technician contact, certification, and license status. |
-| **Leave Application** | Frappe HR Leave Validation | Blocks scheduling if technician is on approved leave. |
-| **Holiday List** | Company Holiday Validation | Warns / blocks assignment on weekly offs and public holidays. |
-| **Shift Assignment** | Frappe HR Shifts | Correlates shift hours with dispatch time slots. |
-| **Attendance** | Auto-Mark Present | Submits attendance record in HR ledger on work order closure. |
-| **Customer** | CRM / Selling | Synchronizes customer contacts and billing addresses. |
-| **Item** | Stock & Consumables | Chemical items and PPE equipment linking for inventory tracking. |
+</td>
+<td width="50%" valign="top">
 
----
+**👥 Roles**
 
-## Reports & Executive Dashboard
+- 🥇 Lead Technician
+- 🤝 Assistant Technician
+- 💨 Chemical Sprayer
+- 🔍 Quality Inspector
 
-The custom **Pest Control & FM Workspace** includes:
+</td>
+</tr>
+</table>
 
-### Operational KPI Number Cards:
-1. **Scheduled Jobs:** Real-time count of pending / upcoming jobs.
-2. **Completed Jobs:** Closed work orders for the current operational cycle.
-3. **Active AMC Contracts:** Running customer maintenance contracts.
-4. **Certified Technicians:** Active licensed technicians ready for deployment.
+### 🏗 Facilities & contracts
 
-### Standard Analytical Reports:
-* **Today's Dispatch Report:** Live morning standup sheet for field supervisors.
-* **Daily Manpower Deployment:** Technician allocation matrix sorted by shift and role.
-* **Overdue AMC Visits:** Alerts for contracts overdue for periodic maintenance.
-* **Technician Planned Deployment vs Recorded Attendance:** Audit variance between dispatched shifts and HR check-ins.
-* **Failed Services & Revisit Queue:** Tracks unresolved customer complaints and rework tickets.
-* **Scheduled & Unallocated Work Orders:** Identifies scheduled jobs lacking manpower.
-* **Work Orders in Progress:** Active on-site jobs.
-* **Completed Visits by Date:** Historical audit log of completed visits.
-* **AMC Contract Expiry & Renewal:** Forward-looking renewal pipeline for commercial accounts.
+| DocType | Details |
+|---|---|
+| **Pest Control Site** | Multiple sites per client. **Types:** Commercial Office, Residential Villa / Flat, Food & Beverage / Restaurant, Healthcare / Hospital, Industrial / Warehouse, Shopping Mall. **Risk levels:** 🟢 Low · 🟡 Medium · 🟠 High · 🔴 Critical – Food Safety |
+| **Pest Control Contract** | **Types:** Annual Maintenance Contract (AMC), One-Time Service Contract, Seasonal Disinfestation. Tracks contract value, payment schedule and service frequency. |
+| **Service Type** | Treatment catalog, e.g. Termite Control, Bedbug Eradication, Rodent Baiting, General Disinfection, Mosquito Fogging. |
 
----
+### 🔗 Frappe HR & ERPNext touchpoints
 
-## Whitelisted REST APIs
+| Standard DocType | Used for |
+|---|---|
+| `Employee` | Technician contact, certification and license status |
+| `Leave Application` | Blocks scheduling during approved leave |
+| `Holiday List` | Warns or blocks on weekly offs and public holidays |
+| `Shift Assignment` | Correlates shift hours with dispatch slots |
+| `Attendance` | Auto-marked Present on work order completion |
+| `Customer` | Contacts and billing addresses |
+| `Item` | Chemicals and PPE for inventory tracking |
 
-The app exposes REST endpoints for integration with mobile apps, client portals, and external dispatch tools (`pest_control/api.py`):
+<br>
 
-### 1. `get_available_technicians`
-Finds eligible technicians for a given date and time slot:
-```python
+## 📊 Workspace & Reports
+
+The **Pest Control & FM** workspace includes four number cards:
+
+| 🗓 Scheduled Jobs | ✅ Completed Jobs | 📑 Active AMC Contracts | 🎓 Certified Technicians |
+|:---:|:---:|:---:|:---:|
+
+<details>
+<summary><b>📈 View all 9 reports</b></summary>
+
+<br>
+
+| Report | Use it for |
+|---|---|
+| **Today's Dispatch Report** | Morning standup sheet for supervisors |
+| **Daily Manpower Deployment** | Technician matrix by shift and role |
+| **Scheduled & Unallocated Work Orders** | Jobs that still lack manpower |
+| **Work Orders in Progress** | Live on-site jobs |
+| **Completed Visits by Date** | Historical audit of completed visits |
+| **Overdue AMC Visits** | Contracts overdue for periodic service |
+| **AMC Contract Expiry & Renewal** | Forward-looking renewal pipeline |
+| **Failed Services & Revisit Queue** | Unresolved complaints and rework |
+| **Technician Planned Deployment vs Recorded Attendance** | Variance between dispatched shifts and HR check-ins |
+
+</details>
+
+<br>
+
+## 🔌 REST API
+
+All methods are whitelisted in `pest_control/api.py` and callable from the desk (`frappe.call`) or over HTTP at `/api/method/<dotted.path>`.
+
+<details open>
+<summary><b>🔎 <code>get_available_technicians</code></b></summary>
+
+<br>
+
+Returns eligible technicians for a date and slot. Technicians on approved leave or already booked are excluded, and the rest are scored by completed jobs.
+
+```js
 frappe.call({
-    method: "pest_control.api.get_available_technicians",
-    args: {
-        date: "2026-10-26",
-        time_slot: "Morning (08:00 - 12:00)"
-    }
+  method: "pest_control.api.get_available_technicians",
+  args: { date: "2026-10-26", time_slot: "Morning (08:00 - 12:00)" },
 });
 ```
-*Filters out technicians who are on approved leave or already booked, and scores them by completed jobs.*
 
-### 2. `assign_technicians`
-Bulk creates and submits `Manpower Allocation` records for a work order:
-```python
+</details>
+
+<details>
+<summary><b>👷 <code>assign_technicians</code></b></summary>
+
+<br>
+
+Bulk-creates and submits **Manpower Allocation** records for a work order.
+
+```js
 frappe.call({
-    method: "pest_control.api.assign_technicians",
-    args: {
-        work_order: "PWO-2026-00001",
-        assignments: [
-            {"employee": "EMP-0001", "role": "Lead Technician"},
-            {"employee": "EMP-0002", "role": "Chemical Sprayer"}
-        ]
-    }
+  method: "pest_control.api.assign_technicians",
+  args: {
+    work_order: "PWO-2026-00001",
+    assignments: [
+      { employee: "EMP-0001", role: "Lead Technician" },
+      { employee: "EMP-0002", role: "Chemical Sprayer" },
+    ],
+  },
 });
 ```
 
-### 3. `complete_work_order`
-Completes a work order, updates technician check-out timestamps, and registers HR attendance:
-```python
+</details>
+
+<details>
+<summary><b>✅ <code>complete_work_order</code></b></summary>
+
+<br>
+
+Completes the work order, sets technician check-out timestamps and registers HR attendance.
+
+```js
 frappe.call({
-    method: "pest_control.api.complete_work_order",
-    args: {
-        work_order: "PWO-2026-00001",
-        client_feedback: "Excellent",
-        remarks: "Cockroach gel baiting applied across kitchen and pantry."
-    }
+  method: "pest_control.api.complete_work_order",
+  args: {
+    work_order: "PWO-2026-00001",
+    client_feedback: "Excellent",
+    remarks: "Cockroach gel baiting applied across kitchen and pantry.",
+  },
 });
 ```
 
----
+</details>
 
-## Installation Guide
+<details>
+<summary><b>🌐 Calling over HTTP (token auth)</b></summary>
 
-### Prerequisites
-- [Bench CLI](https://github.com/frappe/bench) installed
+<br>
+
+```bash
+curl -X POST https://<your-site>/api/method/pest_control.api.get_available_technicians \
+  -H "Authorization: token <api_key>:<api_secret>" \
+  -H "Content-Type: application/json" \
+  -d '{"date": "2026-10-26", "time_slot": "Morning (08:00 - 12:00)"}'
+```
+
+</details>
+
+<br>
+
+## 🚀 Installation
+
+**Prerequisites**
+
+- Bench CLI
 - Python 3.10+
-- Frappe Framework v15
-- ERPNext v15
-- Frappe HR v15
+- Frappe Framework v15, ERPNext v15 and Frappe HR v15 installed on the target site
 
-### Step-by-Step Installation
+```bash
+# 1. Go to your bench
+cd ~/frappe-bench
 
-1. Navigate to your frappe-bench directory:
-   ```bash
-   cd ~/frappe-bench
-   ```
+# 2. Fetch the app
+bench get-app https://github.com/Gopika-Dileep/frappe-custom-app.git
 
-2. Download the app repository:
-   ```bash
-   bench get-app https://github.com/Gopika-Dileep/frappe-custom-app.git pest_control
-   ```
+# 3. Install it on your site
+bench --site <your-site-name> install-app pest_control
 
-3. Install the app on your site:
-   ```bash
-   bench --site <your-site-name> install-app pest_control
-   ```
+# 4. Migrate and clear cache
+bench --site <your-site-name> migrate
+bench --site <your-site-name> clear-cache
+```
 
-4. Run database migrations and clear cache:
-   ```bash
-   bench --site <your-site-name> migrate
-   bench --site <your-site-name> clear-cache
-   ```
+> [!IMPORTANT]
+> ERPNext and Frappe HR must already be installed on the site before running `install-app`.
 
-5. (Optional) Run test engine validation:
-   ```bash
-   bench --site <your-site-name> execute pest_control.test_engine.run_test
-   ```
+**Optional smoke test**
 
----
+```bash
+bench --site <your-site-name> execute pest_control.test_engine.run_test
+```
 
-## Development & Code Quality
+### ✅ First-time setup checklist
 
-This project adheres to strict Frappe community standards and uses `pre-commit` hooks for linting and code formatting:
+- [ ] Create **Service Types** for the treatments you offer
+- [ ] Add **Chemical / PPE Items** in Stock
+- [ ] Make sure technician **Employees** have license details filled in
+- [ ] Maintain a **Holiday List** and assign it to the company or employees
+- [ ] Create a **Pest Control Site** for each customer premises, then a **Contract**
+
+<br>
+
+## 🛠 Development
 
 ```bash
 cd apps/pest_control
 pre-commit install
 ```
 
-Configured Linters & Tools:
-- **Ruff:** Lightning-fast Python linting and formatting.
-- **ESLint & Prettier:** JavaScript formatting for desk views and client scripts.
-- **Pyupgrade:** Modern Python syntax enforcement.
-- **Frappe Semgrep:** Security and best practice rule scanning.
+| Tool | Purpose |
+|---|---|
+| **Ruff** | Python linting and formatting |
+| **ESLint + Prettier** | JavaScript for desk views and client scripts |
+| **Pyupgrade** | Modern Python syntax |
+| **Frappe Semgrep** | Security and best-practice rules |
 
----
+Run all checks with `pre-commit run --all-files`.
 
-## License & Author
+<br>
 
-- **Author:** Gopika Dileep ([@Gopika-Dileep](https://github.com/Gopika-Dileep))
-- **Email:** gopikadileep76@gmail.com
-- **License:** MIT License ([license.txt](license.txt))
+## 🤝 Contributing
+
+Issues and pull requests are welcome.
+
+1. Fork the repo and create a branch: `git checkout -b feature/my-change`
+2. Make your changes and run `pre-commit run --all-files`
+3. Open a pull request describing what changed and why
+
+<br>
+
+## 📄 License & Author
+
+Released under the [MIT License](LICENSE).
+
+<div align="center">
+
+<br>
+
+**Subhana SN** · [@Subhana-7](https://github.com/Subhana-7) · [subhanasn2005@gmail.com](mailto:subhanasn2005@gmail.com)
+
+<sub>Built with ❤️ on Frappe, ERPNext and Frappe HR</sub>
+
+</div>

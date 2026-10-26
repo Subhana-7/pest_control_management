@@ -1,9 +1,9 @@
 [project]
-name = "pest_control_management"
+name = "pest_control"
 authors = [
-    { name = "Subhana", email = "subhanasn2005@gmail.com"}
+    { name = "Gopika", email = "gopika@example.com"}
 ]
-description = "Custom manpower allocation and pest control operations management"
+description = "Pest Control Manpower Allocation and Facility Management ERP"
 requires-python = ">=3.10"
 readme = "README.md"
 dynamic = ["version"]

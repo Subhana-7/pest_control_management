@@ -8,7 +8,7 @@ repos:
     rev: v5.0.0
     hooks:
       - id: trailing-whitespace
-        files: "pest_control_management.*"
+        files: "pest_control.*"
         exclude: ".*json$|.*txt$|.*csv|.*md|.*svg"
       - id: check-merge-conflict
       - id: check-ast
@@ -38,11 +38,11 @@ repos:
         # Ignore any files that might contain jinja / bundles
         exclude: |
             (?x)^(
-                pest_control_management/public/dist/.*|
+                pest_control/public/dist/.*|
                 .*node_modules.*|
                 .*boilerplate.*|
-                pest_control_management/templates/includes/.*|
-                pest_control_management/public/js/lib/.*
+                pest_control/templates/includes/.*|
+                pest_control/public/js/lib/.*
             )$
 
 
@@ -55,12 +55,12 @@ repos:
         # Ignore any files that might contain jinja / bundles
         exclude: |
             (?x)^(
-                pest_control_management/public/dist/.*|
+                pest_control/public/dist/.*|
                 cypress/.*|
                 .*node_modules.*|
                 .*boilerplate.*|
-                pest_control_management/templates/includes/.*|
-                pest_control_management/public/js/lib/.*
+                pest_control/templates/includes/.*|
+                pest_control/public/js/lib/.*
             )$
 
 ci:
